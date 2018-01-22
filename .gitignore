@@ -1,4 +1,8 @@
 .idea
 composer.lock
 *.log
+<<<<<<< HEAD
 thinkphp
+=======
+thinkphp
+>>>>>>> 1bc4f78ee0c4f7dc7fb14b52bca96fa801bad413
