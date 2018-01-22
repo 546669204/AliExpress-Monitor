@@ -1,0 +1,175 @@
+<div class="container">
+    <div id="toolbar">
+
+    </div>
+    <table id="table" data-toolbar="#toolbar" data-search="false" data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
+        data-show-export="true" data-detail-view="false" data-detail-formatter="detailFormatter" data-minimum-count-columns="2"
+        data-show-pagination-switch="true" data-pagination="true" data-id-field="id" data-page-list="[10, 25, 50, 100, ALL]"
+        data-show-footer="false" data-side-pagination="server" data-url="/index/updatelog" -data-response-handler="responseHandler" 
+        data-filter-control="true" data-filter-show-clear="true" >
+        <thead>
+            <tr>
+                <!--<th data-width="10" data-align="center" data-checkbox="true" data-formatter="imageFormatter" data-events="operateEvents" ></th>-->
+                <th data-width="50" data-field="products_id" data-sortable="true" data-formatter="products_id" data-events="productsoperateEvents" data-filter-control="input">产品id</th>
+                <th data-width="50" data-field="update_key" data-sortable="true" data-formatter="update_key_Formatter" data-filter-control="select" data-filter-data='var:update_select'>更改项</th>
+                <th data-width="50" data-field="update_old" data-sortable="true" data-formatter="enterFormatter" data-filter-control="input">旧数据</th>
+                <th data-width="50" data-field="update_now" data-sortable="true" data-formatter="enterFormatter" data-filter-control="input">新数据</th>
+                <th data-width="50" data-field="create_time" data-sortable="true"  data-filter-control="datepicker" data-filter-datepicker-options='{"autoclose":true, "clearBtn": true, "todayHighlight": true,"language":"zh-CN","format":"yyyy-mm-dd"}'>更新时间</th>
+
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="products_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">产品信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">.col-md-4</div>
+          <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+          <div class="col-md-2 col-md-offset-4">.col-md-2 .col-md-offset-4</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            Level 1: .col-sm-9
+            <div class="row">
+              <div class="col-xs-8 col-sm-6">
+                Level 2: .col-xs-8 .col-sm-6
+              </div>
+              <div class="col-xs-4 col-sm-6">
+                Level 2: .col-xs-4 .col-sm-6
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+var update_select = {
+    'products_order':'6月销量',
+    'products_name':'商品名称',
+    'products_prices':'商品价格(多个)',
+    'products_discount_price':'实价',
+    'products_price':'参考价',
+    'products_url':'链接',
+    'products_wishlist':'加购人数',
+};
+
+    function update_key_Formatter(value, elm, index) {
+        switch (value) {
+            case "products_order":
+                return "6月销量";
+                break;
+            case "products_name":
+                return "商品名称";
+                break;
+            case "products_prices":
+                return "商品价格(多个)";
+                break;
+            case "products_discount_price":
+                return "实价";
+                break;
+            case "products_price":
+                return "参考价";
+                break;
+            case "products_url":
+                return "链接";
+                break;
+            case "products_wishlist":
+                return "加购人数";
+                break;
+            default:
+
+                break;
+        }
+        //return '<a href="' + value + '" target="_blank">点击跳转</a>'
+    }
+
+    function enterFormatter(value, elm, index) {
+        if (typeof (value) == "string") {
+            return value.replace("\n", "<br/>");
+        }
+        return value;
+
+    }
+
+    function products_id(value, elm, index) {
+        return '<a class="link">' + value + '</a>';
+    }
+    var productsoperateEvents = {
+        'click .link': function (e, value, row, index) {
+            $.ajax({
+                url:"/index/updatelog/productsinfo",
+                type:"get",
+                data:{"id":value},
+                success:function(data){
+                    var $table = $("<table></table>");
+                    $.each(data,function(index,value,elm){
+                        $k = "";
+                        switch (index) {
+                            case "products_num":
+                                $k = "商品编号";
+                                break;
+                            case "products_url":
+                                $k = "商品链接";
+                                break;
+                            case "products_name":
+                                $k = "商品名称";
+                                break;
+                            case "products_order":
+                                $k = "6月销量";
+                                break;
+                            case "products_prices":
+                                $k = "商品价格(多个)";
+                                break;
+                            case "products_price":
+                                $k = "参考价";
+                                break;
+                            case "products_discount_price":
+                                $k = "商品实价";
+                                break;
+                            case "products_wishlist":
+                                $k = "商品加购人数";
+                                break;
+                        
+                            default:
+                                break;
+                        }
+                        if($k == ""){return true;}
+                        $tr = $("<tr></tr>");
+                        $tr.append($("<td style='width:100px;'>"+$k+"</td><td>"+value+"</td>"));
+                        $table.append($tr);
+                    })
+                    $('#products_modal .modal-body').html('').append($table);
+
+                    $('#products_modal').modal({});
+                }
+            });
+            
+            return ;
+        }
+    };
+    $table = $("#table");
+    $table.bootstrapTable({
+
+    });
+</script>

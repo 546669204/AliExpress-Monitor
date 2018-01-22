@@ -1,0 +1,34 @@
+{
+    "name": "AliExpress-Monitor",
+    "description": "AliExpress monitoring the situation of goods such as a single price reduction out of stock",
+    "type": "project",
+    "keywords": [
+        "framework",
+        "thinkphp",
+        "ORM"
+    ],
+    "homepage": "http://52m.me",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "xiaoming",
+            "email": "546669204@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "topthink/framework": "5.0.*",
+        "electrolinux/phpquery": "^0.9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "application"
+        }
+    },
+    "extra": {
+        "think-path": "thinkphp"
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}

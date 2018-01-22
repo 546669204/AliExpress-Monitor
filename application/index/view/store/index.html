@@ -1,0 +1,90 @@
+<div class="container">
+    <div id="toolbar">
+        <button id="add" class="btn btn-success" data-toggle="modal" data-target="#my_modal">
+            <i class="glyphicon glyphicon-plus"></i> Add
+        </button>
+        <!--<button id="remove" class="btn btn-danger" >
+            <i class="glyphicon glyphicon-remove"></i> Delete
+        </button>-->
+    </div>
+    <table id="table" data-toolbar="#toolbar" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
+        data-show-export="true" data-detail-view="false" data-detail-formatter="detailFormatter" data-minimum-count-columns="2"
+        data-show-pagination-switch="true" data-pagination="true" data-id-field="id" data-page-list="[10, 25, 50, 100, ALL]"
+        data-show-footer="false" data-side-pagination="client" data-url="/index/store/" -data-response-handler="responseHandler"
+        data-filter-control="false" data-filter-show-clear="false">
+        <thead>
+            <tr>
+                <!--<th data-width="10" data-align="center" data-checkbox="true" data-formatter="imageFormatter" data-events="operateEvents" ></th>-->
+                <th data-width="50" data-field="id">ID</th>
+                <th data-width="50" data-field="store_num">商店编号</th>
+                <th data-width="50" data-field="store_name">商店名称</th>
+                <th data-width="50" data-field="products_count">产品数量</th>
+                <th data-width="50" data-field="products_sell">当日销量</th>
+                <th data-width="50" data-field="sell_count" data-formatter="daoFormatter">当日销售量</th>
+                <th data-width="50" data-field="products_wish">当日加购</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="my_modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="gridSystemModalLabel">店铺添加</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="myform">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">店铺编号</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="store_num" placeholder="000000000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">店铺名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="store_name" placeholder="My Name Is AliExpress">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-loading-text="正在提交中..." id="save">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script>
+    function urlformatter(value, elm, index) {
+        return '<a href="' + value + '" target="_blank">点击跳转</a>'
+    }
+
+    function daoFormatter(value, elm, index){
+        return "$" + value ;
+    }
+    $table = $("#table");
+    $table.bootstrapTable({});
+    $('#save').on('click', function () {
+        var $btn = $(this).button('loading');
+        $.ajax({
+            url:"/index/store/add",
+            type:"post",
+            data:$("#myform").serializeArray(),
+            success:function(data){
+                console.log(data);
+            },
+            complete:function(){
+                $('#my_modal').modal('hide')
+                $btn.button('reset');
+            }
+        });
+    });
+</script>
